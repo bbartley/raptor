@@ -27,11 +27,13 @@ ENDIF(RAPTOR_PARSER_NTRIPLES OR RAPTOR_PARSER_NQUADS)
 IF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
   SET(raptor_parser_turtle_trig_sources
     turtle_common.h
-#     turtle_lexer.c
-#     turtle_lexer.h
+    turtle_lexer.c
+    turtle_lexer.h
     turtle_parser.c
     turtle_parser.h
   )
+
+  # Generate the turtle parser
   ADD_CUSTOM_TARGET(turtle_tables_tgt DEPENDS turtle_parser.tab.c turtle_parser.tab.h)
   ADD_CUSTOM_COMMAND(OUTPUT turtle_parser.tab.c
     COMMAND ${BISON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl
@@ -139,11 +141,25 @@ IF(RAPTOR_PARSER_RDFA)
 		${CMAKE_SOURCE_DIR}/librdfa/strtok_r.h
 	)
 ENDIF(RAPTOR_PARSER_RDFA)
+
 IF(NOT HAVE_STRCASECMP AND NOT HAVE_STRICMP)
 	SET(raptor_strcasecmp_sources strcasecmp.c)
 ENDIF(NOT HAVE_STRCASECMP AND NOT HAVE_STRICMP)
+
 IF(RAPTOR_PARSEDATE)
-	SET(raptor_parsedate_sources parsedate.c)
+  SET(raptor_parsedate_sources parsedate.c)
+
+  # Generate the date/time parser
+  ADD_CUSTOM_TARGET(parsedate_tables_tgt DEPENDS parsedate.tab.c parsedate.tab.h)
+  ADD_CUSTOM_COMMAND(OUTPUT parsedate.tab.c
+    COMMAND ${BISON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl
+    DEPENDS parsedate.tab.c)
+
+  ADD_CUSTOM_TARGET(parsedate_tgt DEPENDS parsedate_tables_tgt parsedate.c parsedate.h)
+  ADD_CUSTOM_COMMAND(OUTPUT parsedate.c
+    COMMAND ${PERL_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl parsedate.tab.c > parsedate.c
+    DEPENDS parsedate_tables_tgt)
+  ADD_CUSTOM_COMMAND(OUTPUT parsedate.h COMMAND ${CMAKE_COMMAND} -E move parsedate.tab.h parsedate.h)
 ENDIF(RAPTOR_PARSEDATE)
 
 IF(BUILD_SHARED_LIBS)
@@ -208,6 +224,12 @@ ADD_LIBRARY(raptor2 ${LIB_TYPE}
 	${raptor_strcasecmp_sources}
 	${raptor_parsedate_sources}
 )
+IF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
+  add_dependencies(raptor2 turtle_parser_tgt)
+ENDIF()
+IF(RAPTOR_PARSEDATE)
+  add_dependencies(raptor2 parsedate_tgt)
+ENDIF()
 
 TARGET_LINK_LIBRARIES(raptor2
 	${raptor_libxslt_libs}
