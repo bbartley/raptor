@@ -23,12 +23,14 @@ SET(CMAKE_INCLUDE_CURRENT_DIR 1)
 
 ################################################################
 
-# Third-party libraries
+# Third-party libraries/dependencies
 
 FIND_PACKAGE(CURL)
 FIND_PACKAGE(LibXml2)
 FIND_PACKAGE(LibXslt)
 #FIND_PACKAGE(YAJL)
+FIND_PACKAGE(Perl REQUIRED)
+FIND_PACKAGE(BISON REQUIRED)
 
 if(EXISTS ${CURL_INCLUDE_DIRS})
   INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIRS})
@@ -277,6 +279,37 @@ CONFIGURE_FILE(
 	src/raptor2.h
 	@ONLY
 )
+
+################################################################
+
+message(STATUS "
+################################################################
+Raptor Configuration Summary
+################################################################
+
+    http://librdf.org/raptor/
+
+    Configured on host $ENV{COMPUTERNAME} ${HOSTNAME}
+      host OS                   ${CMAKE_SYSTEM_NAME}
+      host architecture         ${CMAKE_SYSTEM_PROCESSOR}
+
+    General flags:
+      CC                        ${CMAKE_C_COMPILER}
+      CXX (not used)            ${CMAKE_CXX_COMPILER}
+      CFLAGS                    ${CMAKE_C_FLAGS}
+      CXXFLAGS                  ${CMAKE_CXX_FLAGS}
+      LDFLAGS                   ${CMAKE_EXE_LINKER_FLAGS}
+
+    Installation prefix:        ${CMAKE_INSTALL_PREFIX}
+
+    Dependencies (packages marked with *** are required):
+    "
+)
+
+message( "  *** Perl                        ${PERL_EXECUTABLE}")
+message( "  *** Bison                       ${BISON_EXECUTABLE}")
+
+################################################################
 
 # On Windows, the test/utility programs usually have DLL dependencies that
 # make them cumbersome to invoke within IDE environments, so we enable the

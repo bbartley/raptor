@@ -3,27 +3,48 @@
 # Original listfile by Daniel Richard G. <skunk@iSKUNK.ORG>
 # This file is in the public domain.
 #
+# Changes 01/20/15 J Kyle Medley
+#
 
 IF(RAPTOR_PARSER_RDFA)
 	INCLUDE_DIRECTORIES(BEFORE ${CMAKE_SOURCE_DIR}/librdfa)
 ENDIF(RAPTOR_PARSER_RDFA)
 
+# ** Parser sources **
+
+# XML parser enabled
 IF(RAPTOR_PARSER_RDFXML)
 	SET(raptor_parser_rdfxml_sources raptor_rdfxml.c)
 	SET(raptor_libxml_libs ${LIBXML2_LIBRARIES})
 ENDIF(RAPTOR_PARSER_RDFXML)
+
+# N triples parser enabled
 IF(RAPTOR_PARSER_NTRIPLES OR RAPTOR_PARSER_NQUADS)
 	SET(raptor_parser_ntriples_nquads_sources ntriples_parse.c raptor_ntriples.c)
 ENDIF(RAPTOR_PARSER_NTRIPLES OR RAPTOR_PARSER_NQUADS)
+
+# Turtle parser enabled
 IF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
-	SET(raptor_parser_turtle_trig_sources
-		turtle_common.h
-		turtle_lexer.c
-		turtle_lexer.h
-		turtle_parser.c
-		turtle_parser.h
-	)
+  SET(raptor_parser_turtle_trig_sources
+    turtle_common.h
+#     turtle_lexer.c
+#     turtle_lexer.h
+    turtle_parser.c
+    turtle_parser.h
+  )
+  ADD_CUSTOM_TARGET(turtle_tables_tgt DEPENDS turtle_parser.tab.c turtle_parser.tab.h)
+  ADD_CUSTOM_COMMAND(OUTPUT turtle_parser.tab.c
+    COMMAND ${BISON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl
+    DEPENDS turtle_parser.tab.c)
+
+  ADD_CUSTOM_TARGET(turtle_parser_tgt DEPENDS turtle_tables_tgt turtle_parser.c turtle_parser.h)
+  ADD_CUSTOM_COMMAND(OUTPUT turtle_parser.c
+    COMMAND ${PERL_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl turtle_parser.tab.c > turtle_parser.c
+    DEPENDS turtle_tables_tgt)
+  ADD_CUSTOM_COMMAND(OUTPUT turtle_parser.h COMMAND ${CMAKE_COMMAND} -E move turtle_parser.tab.h turtle_parser.h)
 ENDIF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
+
+# RSS feed parser enabled
 IF(RAPTOR_PARSER_RSS OR RAPTOR_SERIALIZER_RSS_1_0)
 	SET(raptor_rss_common_sources raptor_rss_common.c raptor_rss.h)
 ENDIF(RAPTOR_PARSER_RSS OR RAPTOR_SERIALIZER_RSS_1_0)
@@ -31,20 +52,30 @@ IF(RAPTOR_PARSER_RSS)
 	SET(raptor_parser_rss_sources raptor_rss.c)
 	SET(raptor_libxml_libs ${LIBXML2_LIBRARIES})
 ENDIF(RAPTOR_PARSER_RSS)
+
+# GRDDL parser enabled
 IF(RAPTOR_PARSER_GRDDL)
 	SET(raptor_parser_grddl_sources raptor_grddl.c)
 	SET(raptor_libxml_libs ${LIBXML2_LIBRARIES})
 	SET(raptor_libxslt_libs ${LIBXSLT_LIBRARIES})
 ENDIF(RAPTOR_PARSER_GRDDL)
+
+# Guess which parser to use based on context
 IF(RAPTOR_PARSER_GUESS)
 	SET(raptor_parser_guess_sources raptor_guess.c)
 ENDIF(RAPTOR_PARSER_GUESS)
+
+# RDFA parser enabled
 IF(RAPTOR_PARSER_RDFA)
 	SET(raptor_parser_rdfa_sources raptor_librdfa.c)
 ENDIF(RAPTOR_PARSER_RDFA)
+
+# JSON parser enabled
 IF(RAPTOR_PARSER_JSON)
 	SET(raptor_parser_json_sources raptor_json.c)
 ENDIF(RAPTOR_PARSER_JSON)
+
+# ** Serializers **
 
 IF(RAPTOR_SERIALIZER_RDFXML)
 	SET(raptor_serializer_rdfxml_sources raptor_serialize_rdfxml.c)
