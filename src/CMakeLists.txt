@@ -26,11 +26,11 @@ ENDIF(RAPTOR_PARSER_NTRIPLES OR RAPTOR_PARSER_NQUADS)
 # Turtle parser enabled
 IF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
   SET(raptor_parser_turtle_trig_sources
-    turtle_common.h
+#     turtle_common.h
     turtle_lexer.c
-    turtle_lexer.h
+#     turtle_lexer.h
     turtle_parser.c
-    turtle_parser.h
+#     turtle_parser.h
   )
 
   # Generate the turtle parser
@@ -147,9 +147,9 @@ IF(RAPTOR_PARSER_RDFA)
 		${CMAKE_SOURCE_DIR}/librdfa/strtok_r.c
 		${CMAKE_SOURCE_DIR}/librdfa/subject.c
 		${CMAKE_SOURCE_DIR}/librdfa/triple.c
-		${CMAKE_SOURCE_DIR}/librdfa/rdfa.h
-		${CMAKE_SOURCE_DIR}/librdfa/rdfa_utils.h
-		${CMAKE_SOURCE_DIR}/librdfa/strtok_r.h
+# 		${CMAKE_SOURCE_DIR}/librdfa/rdfa.h
+# 		${CMAKE_SOURCE_DIR}/librdfa/rdfa_utils.h
+# 		${CMAKE_SOURCE_DIR}/librdfa/strtok_r.h
 	)
 ENDIF(RAPTOR_PARSER_RDFA)
 
@@ -236,7 +236,7 @@ ADD_LIBRARY(raptor2 ${LIB_TYPE}
 	${raptor_parsedate_sources}
 )
 IF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
-  add_dependencies(raptor2 turtle_parser_tgt)
+  add_dependencies(raptor2 turtle_parser_tgt turtle_lexer_tgt)
 ENDIF()
 IF(RAPTOR_PARSEDATE)
   add_dependencies(raptor2 parsedate_tgt)
