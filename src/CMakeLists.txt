@@ -34,16 +34,27 @@ IF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
   )
 
   # Generate the turtle parser
-  ADD_CUSTOM_TARGET(turtle_tables_tgt DEPENDS turtle_parser.tab.c turtle_parser.tab.h)
+  ADD_CUSTOM_TARGET(turtle_tables_tgt DEPENDS turtle_parser.tab.c)
   ADD_CUSTOM_COMMAND(OUTPUT turtle_parser.tab.c
-    COMMAND ${BISON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl
-    DEPENDS turtle_parser.tab.c)
+    COMMAND ${BISON_EXECUTABLE} turtle_parser.y
+    DEPENDS turtle_parser.y)
 
   ADD_CUSTOM_TARGET(turtle_parser_tgt DEPENDS turtle_tables_tgt turtle_parser.c turtle_parser.h)
   ADD_CUSTOM_COMMAND(OUTPUT turtle_parser.c
     COMMAND ${PERL_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl turtle_parser.tab.c > turtle_parser.c
     DEPENDS turtle_tables_tgt)
   ADD_CUSTOM_COMMAND(OUTPUT turtle_parser.h COMMAND ${CMAKE_COMMAND} -E move turtle_parser.tab.h turtle_parser.h)
+
+  # Generate the turtle lexer
+  ADD_CUSTOM_TARGET(turtle_flex_tgt DEPENDS turtle_parser.tab.c)
+  ADD_CUSTOM_COMMAND(OUTPUT turtle_parser.tab.c
+    COMMAND ${FLEX_EXECUTABLE} -o turtle_lexer.t turtle_lexer.l
+    DEPENDS turtle_lexer.l)
+
+  ADD_CUSTOM_TARGET(turtle_lexer_tgt DEPENDS turtle_flex_tgt)
+  ADD_CUSTOM_COMMAND(OUTPUT turtle_lexer.c
+    COMMAND ${PERL_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-flex.pl turtle_lexer.t > turtle_lexer.c
+    DEPENDS turtle_flex_tgt)
 ENDIF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
 
 # RSS feed parser enabled
@@ -150,10 +161,10 @@ IF(RAPTOR_PARSEDATE)
   SET(raptor_parsedate_sources parsedate.c)
 
   # Generate the date/time parser
-  ADD_CUSTOM_TARGET(parsedate_tables_tgt DEPENDS parsedate.tab.c parsedate.tab.h)
+  ADD_CUSTOM_TARGET(parsedate_tables_tgt DEPENDS parsedate.tab.c)
   ADD_CUSTOM_COMMAND(OUTPUT parsedate.tab.c
-    COMMAND ${BISON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl
-    DEPENDS parsedate.tab.c)
+    COMMAND ${BISON_EXECUTABLE} parsedate.y
+    DEPENDS parsedate.y)
 
   ADD_CUSTOM_TARGET(parsedate_tgt DEPENDS parsedate_tables_tgt parsedate.c parsedate.h)
   ADD_CUSTOM_COMMAND(OUTPUT parsedate.c
