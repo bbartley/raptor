@@ -46,9 +46,9 @@ IF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
   ADD_CUSTOM_COMMAND(OUTPUT turtle_parser.h COMMAND ${CMAKE_COMMAND} -E rename turtle_parser.tab.h turtle_parser.h)
 
   # Generate the turtle lexer
-  ADD_CUSTOM_TARGET(turtle_flex_tgt DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/turtle_lexer.l)
+  ADD_CUSTOM_TARGET(turtle_flex_tgt DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/turtle_lexer.t)
   ADD_CUSTOM_COMMAND(OUTPUT turtle_lexer.t
-    COMMAND ${FLEX_EXECUTABLE} -oturtle_lexer.t ${CMAKE_CURRENT_SOURCE_DIR}/turtle_lexer.l
+    COMMAND ${FLEX_EXECUTABLE} -o turtle_lexer.t ${CMAKE_CURRENT_SOURCE_DIR}/turtle_lexer.l
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/turtle_lexer.l)
 
   ADD_CUSTOM_TARGET(turtle_lexer_tgt DEPENDS turtle_flex_tgt)
