@@ -40,9 +40,9 @@ if(EXISTS ${EXPAT_INCLUDE_DIRS})
   INCLUDE_DIRECTORIES(${EXPAT_INCLUDE_DIRS})
 endif(EXISTS ${EXPAT_INCLUDE_DIRS})
 
-if(EXISTS ${LIBXML2_INCLUDE_DIRS})
-  INCLUDE_DIRECTORIES(${LIBXML2_INCLUDE_DIRS})
-endif(EXISTS ${LIBXML2_INCLUDE_DIRS})
+if(EXISTS ${LIBXML2_INCLUDE_DIR})
+  INCLUDE_DIRECTORIES(${LIBXML2_INCLUDE_DIR})
+endif(EXISTS ${LIBXML2_INCLUDE_DIR})
 
 if(EXISTS ${LIBXSLT_INCLUDE_DIRS})
   INCLUDE_DIRECTORIES(${LIBXSLT_INCLUDE_DIRS})
@@ -308,6 +308,8 @@ Raptor Configuration Summary
 
 message( "  *** Perl                        ${PERL_EXECUTABLE}")
 message( "  *** Bison                       ${BISON_EXECUTABLE}")
+message( "  *** libxml2 (lib)               ${LIBXML2_LIBRARIES}")
+message( "  *** libxml2 (include)           ${LIBXML2_INCLUDE_DIR}")
 
 ################################################################
 
