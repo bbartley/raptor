@@ -43,7 +43,7 @@ IF(RAPTOR_PARSER_TURTLE OR RAPTOR_PARSER_TRIG)
   ADD_CUSTOM_COMMAND(OUTPUT turtle_parser.c
     COMMAND ${PERL_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl turtle_parser.tab.c > turtle_parser.c
     DEPENDS turtle_tables_tgt)
-  ADD_CUSTOM_COMMAND(OUTPUT turtle_parser.h COMMAND ${CMAKE_COMMAND} -E move turtle_parser.tab.h turtle_parser.h)
+  ADD_CUSTOM_COMMAND(OUTPUT turtle_parser.h COMMAND ${CMAKE_COMMAND} -E rename turtle_parser.tab.h turtle_parser.h)
 
   # Generate the turtle lexer
   ADD_CUSTOM_TARGET(turtle_flex_tgt DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/turtle_lexer.l)
@@ -170,7 +170,7 @@ IF(RAPTOR_PARSEDATE)
   ADD_CUSTOM_COMMAND(OUTPUT parsedate.c
     COMMAND ${PERL_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl parsedate.tab.c > parsedate.c
     DEPENDS parsedate_tables_tgt)
-  ADD_CUSTOM_COMMAND(OUTPUT parsedate.h COMMAND ${CMAKE_COMMAND} -E move parsedate.tab.h parsedate.h)
+  ADD_CUSTOM_COMMAND(OUTPUT parsedate.h COMMAND ${CMAKE_COMMAND} -E rename parsedate.tab.h parsedate.h)
 ENDIF(RAPTOR_PARSEDATE)
 
 IF(BUILD_SHARED_LIBS)
