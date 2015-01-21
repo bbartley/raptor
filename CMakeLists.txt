@@ -29,8 +29,9 @@ FIND_PACKAGE(CURL)
 FIND_PACKAGE(LibXml2)
 FIND_PACKAGE(LibXslt)
 #FIND_PACKAGE(YAJL)
-FIND_PACKAGE(Perl REQUIRED)
+FIND_PACKAGE(Perl  REQUIRED)
 FIND_PACKAGE(BISON REQUIRED)
+FIND_PACKAGE(FLEX  REQUIRED)
 
 if(EXISTS ${CURL_INCLUDE_DIRS})
   INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIRS})
@@ -308,6 +309,7 @@ Raptor Configuration Summary
 
 message( "  *** Perl                        ${PERL_EXECUTABLE}")
 message( "  *** Bison                       ${BISON_EXECUTABLE}")
+message( "  *** Flex                        ${FLEX_EXECUTABLE}")
 message( "  *** libxml2 (lib)               ${LIBXML2_LIBRARIES}")
 message( "  *** libxml2 (include)           ${LIBXML2_INCLUDE_DIR}")
 
