@@ -658,6 +658,7 @@ IF(RAPTOR_PARSER_RDFA)
 		"${RAPPER} -f noNet -q -i rdfa10 -I http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0202.xml -o ntriples ${CMAKE_CURRENT_SOURCE_DIR}/0202.xml"
 		0202-res.nt
 		"${RDFDIFF} -f ntriples -u http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0202.xml -t ntriples ${CMAKE_CURRENT_SOURCE_DIR}/0202.out 0202-res.nt"
+		EXPECTED_FAILURE
 	)
 
 	RAPPER_RDFDIFF_TEST(rdfa.0203
