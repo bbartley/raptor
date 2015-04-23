@@ -27,6 +27,7 @@ configuration: Release
 
 environment:
   CYG_ROOT: C:/cygwin
+  CYG_SETUP_URL: http://www.cygwin.com/setup-x86.exe
   CYG_MIRROR: http://cygwin.mirror.constant.com
   CYG_CACHE: C:/cygwin/var/cache/setup
   DEST: "c:/projects/dest"
