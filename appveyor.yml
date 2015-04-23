@@ -33,7 +33,7 @@ environment:
   CMAKE_GENERATOR_STRING: '"Visual Studio 12 Win64"'
 
 install:
-  - cmd: 'Check Cygwin installation'
+  - cmd: 'echo Check Cygwin installation'
   - cmd: 'echo cygroot is %CYG_ROOT%'
   - cmd: 'dir %CYG_ROOT%'
   - cmd: 'echo Installing Perl, Bison and Flex from Cygwin'
