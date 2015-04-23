@@ -33,6 +33,9 @@ environment:
   CMAKE_GENERATOR_STRING: '"Visual Studio 12 Win64"'
 
 install:
+  - cmd: 'Check Cygwin installation'
+  - cmd: 'echo %CYG_ROOT%'
+  - cmd: 'dir %CYG_ROOT%'
   - cmd: 'echo Installing Perl, Bison and Flex from Cygwin'
   - cmd: '%CYG_ROOT%\setup-x86.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P perl -P bison -P flex'
   - cmd: 'echo Check Cygwin setup'
