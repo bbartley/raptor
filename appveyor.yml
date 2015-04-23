@@ -40,7 +40,7 @@ install:
   - cmd: 'echo Installing Cygwin from %CYG_SETUP_URL%'
 #  - ps:  $dwntool=New-Object System.Net.WebClient
 #  - ps:  $dwntool.DownloadFile(http://www.cygwin.com/setup-x86.exe,C:\cygwin\setup-x86.exe)
-  - ps:  Invoke-WebRequest $CYG_MIRROR -OutFile C:\cygwin\setup-x86.exe
+  - ps:  Invoke-WebRequest $env:CYG_MIRROR -OutFile C:\cygwin\setup-x86.exe
   - cmd: 'echo Installing Perl, Bison and Flex from Cygwin'
   - cmd: '%CYG_ROOT%\setup-x86.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P perl -P bison -P flex'
   - cmd: 'echo Check Cygwin setup'
