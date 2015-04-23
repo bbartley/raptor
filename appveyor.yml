@@ -34,7 +34,7 @@ environment:
 
 install:
   - cmd: 'echo Installing Perl, Bison and Flex from Cygwin'
-  - cmd: '%CYG_ROOT%\setup-x86.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P perl -P bison -P flex > NUL'
+  - cmd: '%CYG_ROOT%\setup-x86.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P perl -P bison -P flex'
   - cmd: 'echo Check Cygwin setup'
   - cmd: '%CYG_ROOT%/bin/bash -lc "cygcheck -dc cygwin"'
   - cmd: 'echo Done setting up Cygwin'
