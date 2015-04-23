@@ -68,7 +68,7 @@ build_script:
   - cmd: 'cd %DEST%static'
   - cmd: 'dir /s'
   - cmd: 'cd c:\projects\raptor\bld'
-  - cmd: 'cmake -G %CMAKE_GENERATOR_STRING% -DBUILD_SHARED_LIBS:BOOL=ON -DCMAKE_INSTALL_PREFIX=%DEST% ..'
+  - cmd: 'cmake -G %CMAKE_GENERATOR_STRING% -DBISON_EXECUTABLE=%CYG_ROOT%/bin/bison -DFLEX_EXECUTABLE=%CYG_ROOT%/bin/flex -DPERL_EXECUTABLE=%CYG_ROOT%/bin/perl -DBUILD_SHARED_LIBS:BOOL=ON -DCMAKE_INSTALL_PREFIX=%DEST% ..'
   - cmd: 'cmake --build . --config Release --target INSTALL'
   - cmd: 'cd %DEST%'
   - cmd: 'dir /s'
